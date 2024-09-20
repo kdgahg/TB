@@ -14,6 +14,8 @@ public class SaveLoadMap : MonoBehaviour
 
     public void Load()
     {
+        gridManager.Clear();
+
         int width = mapData.width;
         int height = mapData.height;
 
@@ -26,5 +28,9 @@ public class SaveLoadMap : MonoBehaviour
                 i += 1;
             }
         }
+    }
+    internal void Load(GridMap grid)
+    {
+        mapData.Load(grid);
     }
 }

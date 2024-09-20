@@ -9,6 +9,8 @@ public class GridManager : MonoBehaviour
 {
     Tilemap tilemap;  // 'TileMap'이 아닌 'Tilemap'으로 수정
     GridMap grid;  // CustomGrid 대신 GridMap 사용
+    SaveLoadMap saveLoadMap;
+
 
     [SerializeField] TileSet tileSet;
 
@@ -16,17 +18,21 @@ public class GridManager : MonoBehaviour
     {
         tilemap = GetComponent<Tilemap>();  // 'TileMap'이 아닌 'Tilemap'으로 수정
         grid = GetComponent<GridMap>();  // CustomGrid 대신 GridMap 사용
-        grid.Init(10, 8);  // 필드 초기화
-        for (int x = 1; x < 6; x++)
-        {
-            for (int y = 1; y < 6; y++)
-            {
-                Set(x, y, 2);
-            }
-        }
+        saveLoadMap = GetComponent<SaveLoadMap>();
+
+        saveLoadMap.Load(grid);
+
         UpdateTileMap();  // Start에서 UpdateTileMap을 호출하여 타일맵을 초기화
     }
 
+    internal void Clear()
+    {
+        if (tilemap == null) { tilemap = GetComponent<Tilemap>(); }
+
+        tilemap.ClearAllTiles();
+
+        tilemap = null;
+    }
     void UpdateTileMap()
     {
         for (int x = 0; x < grid.width; x++)
@@ -40,6 +46,7 @@ public class GridManager : MonoBehaviour
 
     public void SetTile(int x, int y, int tileid)
     {
+        if (tileid == -1) { return; }
         if (tilemap == null) { tilemap = GetComponent<Tilemap>(); }
         tilemap.SetTile(new Vector3Int(x, y, 0), tileSet.tiles[tileid]);
         tilemap = null;

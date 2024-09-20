@@ -11,6 +11,7 @@ public class MapData : ScriptableObject
 
     public void Load(GridMap gridMap)
     {
+        gridMap.Init(width, height);    
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -21,7 +22,7 @@ public class MapData : ScriptableObject
     }
     private int Get(int x, int y)
     {
-        int index = y * width + x;
+        int index = x * height + y;
         if (index >= map.Count) { Debug.LogError("out of range on the map data!"); return -1; }
 
         return map[index];
